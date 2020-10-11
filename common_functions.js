@@ -38,7 +38,7 @@ class DateBuilder {
         return this;
     };
     build () {
-        let buildDate = new Date();debugger
+        let buildDate = new Date();
         if (!isNullOrEmptyOrUndefined(this.year)) {
             buildDate.setFullYear(this.year);
         }
