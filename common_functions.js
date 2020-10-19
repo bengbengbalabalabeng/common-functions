@@ -61,95 +61,114 @@ class DateBuilder {
 }
 
 /**
- * Date.plusMinutes()
+ * 时间加减
+ * <p />
+ * 仿照 Java 8 - Local[Date/DateTime] 中 [plus/minus] 方法
+ *
+ * @since 2020/10/12
  */
-if (isNullOrEmptyOrUndefined(Date.prototype.plusMinutes)) {
-    Date.prototype.plusMinutes = function (minutesToAdd) {
-        this.setMinutes(this.getMinutes() + minutesToAdd);
-    }
+if (!Object.prototype.hasOwnProperty("plusMinutes")) {
+	Object.defineProperty(Date.prototype, "plusMinutes", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (minutesToAdd) {
+			let newDate = new Date(this);
+			newDate.setMinutes(newDate.getMinutes() + minutesToAdd);
+			return newDate;
+		}
+	});
+}
+if (!Object.prototype.hasOwnProperty("plusDays")) {
+	Object.defineProperty(Date.prototype, "plusDays", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (daysToAdd) {
+			let newDate = new Date(this);
+			newDate.setDate(newDate.getDate() + daysToAdd);
+			return newDate;
+		}
+	});
+}
+if (!Object.prototype.hasOwnProperty("plusWeeks")) {
+	Object.defineProperty(Date.prototype, "plusWeeks", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (weeksToAdd) {
+			const sunDays = weeksToAdd * 7;
+			let newDate = new Date(this);
+			newDate.setDate(newDate.getDate() + sunDays);
+			return newDate;
+		}
+	});
+}
+if (!Object.prototype.hasOwnProperty("plusMonths")) {
+	Object.defineProperty(Date.prototype, "plusMonths", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (monthsToAdd) {
+			let newDate = new Date(this);
+			newDate.setMonth(newDate.getMonth() + monthsToAdd);
+			return newDate;
+		}
+	});
+}
+if (!Object.prototype.hasOwnProperty("plusYears")) {
+	Object.defineProperty(Date.prototype, "plusYears", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (yearsToAdd) {
+			let newDate = new Date(this);
+			newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
+			return newDate;
+		}
+	});
 }
 
-/**
- * Date.plusDays()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.plusDays)) {
-    Date.prototype.plusDays = function (daysToAdd) {
-        this.setDate(this.getDate() + daysToAdd);
-    }
+if (!Object.prototype.hasOwnProperty("minusMinutes")) {
+	Object.defineProperty(Date.prototype, "minusMinutes", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (minutesToSubtract) {
+			let newDate = new Date(this);
+			newDate.setMinutes(newDate.getMinutes() - minutesToSubtract);
+			return newDate;
+		}
+	});
 }
-
-/**
- * Date.plusWeeks()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.plusWeeks)) {
-    Date.prototype.plusWeeks = function (weeksToAdd) {
-        const sunDays = weeksToAdd * 7;
-        this.setDate(this.getDate() + sunDays);
-    }
+if (!Object.prototype.hasOwnProperty("minusDays")) {
+	Object.defineProperty(Date.prototype, "minusDays", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (daysToSubtract) {
+			let newDate = new Date(this);
+			newDate.setDate(newDate.getDate() - daysToSubtract);
+			return newDate;
+		}
+	});
 }
-
-/**
- * Date.plusMonths()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.plusMonths)) {
-    Date.prototype.plusMonths = function (monthsToAdd) {
-        this.setMonth(this.getMonth() + monthsToAdd);
-    }
+if (!Object.prototype.hasOwnProperty("minusWeeks")) {
+	Object.defineProperty(Date.prototype, "minusWeeks", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (weeksToSubtract) {
+			const sunDays = weeksToSubtract * 7;
+			let newDate = new Date(this);
+			newDate.setDate(newDate.getDate() - weeksToSubtract);
+			return newDate;
+		}
+	});
 }
-
-/**
- * Date.plusYears()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.plusYears)) {
-    Date.prototype.plusYears = function (yearsToAdd) {
-        this.setFullYear(this.getFullYear() + yearsToAdd);
-    }
+if (!Object.prototype.hasOwnProperty("minusMonths")) {
+	Object.defineProperty(Date.prototype, "minusMonths", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (monthsToSubtract) {
+			let newDate = new Date(this);
+			newDate.setMonth(newDate.getMonth() - monthsToSubtract);
+			return newDate;
+		}
+	});
 }
-
-/**
- * Date.minusMinutes()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.minusMinutes)) {
-    Date.prototype.minusMinutes = function (minutesToSubtract) {
-        this.setMinutes(this.getMinutes() - minutesToSubtract);
-    }
-}
-
-/**
- * Date.minusDays()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.minusDays)) {
-    Date.prototype.minusDays = function (daysToSubtract) {
-        this.setDate(this.getDate() - daysToSubtract);
-    }
-}
-
-/**
- * Date.minusWeeks()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.minusWeeks)) {
-    Date.prototype.minusWeeks = function (weeksToSubtract) {
-        const sunDays = weeksToSubtract * 7;
-        this.setDate(this.getDate() - sunDays);
-    }
-}
-
-/**
- * Date.minusMonths()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.minusMonths)) {
-    Date.prototype.minusMonths = function (monthsToSubtract) {
-        this.setMonth(this.getMonth() - monthsToSubtract);
-    }
-}
-
-/**
- * Date.minusYears()
- */
-if (isNullOrEmptyOrUndefined(Date.prototype.minusYears)) {
-    Date.prototype.minusYears = function (yearsToSubtract) {
-        this.setFullYear(this.getFullYear() - yearsToSubtract);
-    }
+if (!Object.prototype.hasOwnProperty("minusYears")) {
+	Object.defineProperty(Date.prototype, "minusYears", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (yearsToSubtract) {
+			let newDate = new Date(this);
+			newDate.setFullYear(newDate.getFullYear() - yearsToSubtract);
+			return newDate;
+		}
+	});
 }
 
 /**
