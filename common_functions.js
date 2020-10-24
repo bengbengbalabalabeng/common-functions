@@ -220,6 +220,150 @@ if (isNullOrEmptyOrUndefined(Date.prototype.format)) {
 }
 
 /**
+ * 返回当月最后一天
+ */
+if (!Object.prototype.hasOwnProperty("getLastDayOfMonth")) {
+	Object.defineProperty(Date.prototype, "getLastDayOfMonth", {
+		configurable: true, enumerable: false, writable: true,
+		value: function () {
+			let dayOfMonths = [31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			let newDate = new Date(this);
+			dayOfMonths[1] = (((newDate.getFullYear() % 100 !== 0) && (newDate.getFullYear() % 4 === 0)) || (newDate.getFullYear() % 400 === 0)) ? 29 : 28;
+			return dayOfMonths[newDate.getMonth()];
+		}
+	});
+}
+
+
+/**
+ *  两个时间大小判断 [after/before/equals]
+ */
+if(!Object.prototype.hasOwnProperty("isAfterOrEquals")) {
+	Object.defineProperty(Date.prototype, "isAfterOrEquals", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (date) {
+			return this >= date;
+		}
+	});
+}
+if(!Object.prototype.hasOwnProperty("isAfter")) {
+	Object.defineProperty(Date.prototype, "isAfter", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (date) {
+			return this > date;
+		}
+	});
+}
+if(!Object.prototype.hasOwnProperty("isBefore")) {
+	Object.defineProperty(Date.prototype, "isBefore", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (date) {
+			return this < date;
+		}
+	});
+}
+if(!Object.prototype.hasOwnProperty("isBeforeOrEquals")) {
+	Object.defineProperty(Date.prototype, "isBeforeOrEquals", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (date) {
+			return this <= date;
+		}
+	});
+}
+if(!Object.prototype.hasOwnProperty("isEquals")) {
+	Object.defineProperty(Date.prototype, "isEquals", {
+		configurable: true, enumerable: false, writable: true,
+		value: function (date) {
+			return this === date;
+		}
+	});
+}
+
+
+/**
+ * 中断操作，（如 特殊循环等...）
+ */
+class InterruptException {
+	get getMessage() {
+		console.log("Interrupt exception");
+	}
+}
+
+/**
+ * 序列化 form table 数据成 object list
+ */
+$.fn.serializeTableToObjectList = function () {
+	let arr = [];
+	let $selfTable = this;
+	let allArr = $selfTable.serializeArray();
+	const trCount = $selfTable.find('tbody tr').length;
+	if (trCount === 1) {
+		const nonNullSize = allArr.filter(item => !isNullOrEmptyOrUndefined(item.value)).length;
+		if (nonNullSize !== 0) {
+			let obj = {};
+			allArr.forEach(item => {
+				obj[item.name] = item.value;
+			});
+			arr.push(obj);
+		}
+		return arr;
+	}
+
+	// 多行是否全部为空
+	const nonNullSize = allArr.filter(item => !isNullOrEmptyOrUndefined(item.value)).length;
+	if (nonNullSize === 0) {
+		return arr;
+	}
+	let allArrCount = allArr.length;
+	// Object 参数的个数
+	const propSize = allArrCount / trCount;
+	let tempCount = propSize;
+	let obj = {};
+	allArr.forEach((item, index) => {
+		if (tempCount === index) {
+			// 单行数据为空，不计入总 arr
+			let flag = false;
+			try {
+				for (const key in obj) {
+					if (!isNullOrEmptyOrUndefined(obj[key])) {
+						flag = true;
+						throw new InterruptException();
+					}
+				}
+			} catch (e) {}
+			if (flag) {
+				arr.push(obj);
+			}
+
+			obj = {};
+			tempCount += propSize;
+		}
+		if ((index + 1) === allArrCount) {
+			// 单行数据为空，不计入总 arr
+			let flag = false;
+			try {
+				for (const key in obj) {
+					if (!isNullOrEmptyOrUndefined(obj[key])) {
+						flag = true;
+						throw new InterruptException();
+					}
+				}
+			} catch (e) {}
+
+			obj[item.name] = item.value;
+			if (flag) {
+				arr.push(obj);
+			}
+			obj = {};
+		}
+		obj[item.name] = item.value;
+	});
+
+	return arr;
+}
+
+
+/**
  *  创建类似于 UUID 的(理论上)唯一标识
  * @returns {string}
  */
