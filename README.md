@@ -29,3 +29,4 @@
 ###### serializtion:
 
 - `$(form).serializeTableToObjectList()`: 序列化 `form > table` 中数据行为 `JSON List` 并返回. 
+
