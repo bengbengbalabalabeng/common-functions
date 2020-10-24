@@ -25,5 +25,7 @@
 - `Date().isBeforeOrEquals(date)`: 当前时间是否小于或等于需对比时间.
 - `Date().isBefore(date)`: 当前时间是否小于需对比时间.
 - `Date().getLastDayOfMonth()`: 当前时间当月的最后一天 `date number`.
-- `$(form).serializeTableToObjectList()`: 序列化 `form > table` 中数据行为 JSON List 并返回. 
 
+###### serializtion:
+
+- `$(form).serializeTableToObjectList()`: 序列化 `form > table` 中数据行为 `JSON List` 并返回. 
